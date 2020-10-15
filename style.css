@@ -1,0 +1,17 @@
+.dojoxCheckedMultiSelectMenuCheckBoxItemIcon {
+  display:block
+}
+
+.dojoxCheckedMultiSelectCheckBoxInput {
+  opacity: 1;
+  border-color: red;
+  background-color: red;
+}
+
+div.pad {
+  position:absolute
+}
+
+#form {
+  display: none
+}

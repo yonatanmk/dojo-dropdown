@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Multiselect</title>
+
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dijit/themes/claro/claro.css"
+    />
+
+    <style>
+      .annotation {
+        background-color: White;
+        position: relative;
+        margin-top: 5px;
+        padding-top: 10px;
+        position: relative;
+      }
+
+      .form-input {
+        margin-bottom: 5px;
+      }
+
+      div.multiselect {
+        padding: 10px !important;
+        background-color: White;
+        border: 1px solid #a8a9be;
+        text-align: left;
+        height: 180px;
+        z-index: 999;
+        padding: 2px;
+      }
+
+      div.multiselect div.checkboxList {
+        bottom: 41px;
+        height: 150px;
+        overflow: auto;
+        top: 44px;
+        width: 100%;
+      }
+
+      div.multiselect div.checkboxList th {
+        font-weight: bold;
+      }
+
+      div.multiselect div.checkboxList td label {
+        /* the max-width is set from the JS code so that each column in the list gets proportional weight */
+        padding: 0 4px 0 4px;
+        display: block;
+        white-space: normal;
+      }
+
+      div.multiselect div.filter {
+        float: left;
+      }
+
+      div.multiselect div.filter .textcontrol {
+        width: 100%;
+      }
+
+      div.multiselect div.buttons {
+        position: absolute;
+        bottom: 0px;
+        text-align: right;
+        padding: 0 7px 0 0;
+        width: 100%;
+      }
+
+      div.multiselect input[type="checkbox"] {
+        width: auto !important;
+        float: none;
+      }
+
+      .lbl {
+        float: left;
+      }
+
+      .textcontrol {
+      }
+
+      .panConFilter {
+      }
+
+      .closebnt {
+        position: absolute;
+        width: 18px;
+        top: 5px;
+        right: 5px;
+      }
+    </style>
+
+    <script>
+      window.console = window.console || function (t) {};
+    </script>
+
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+    </script>
+  </head>
+
+  <body translate="no">
+    <div id="last">qsd</div>
+    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"></script>
+
+    <script id="rendered-js">
+      require([
+        "dojo/_base/declare",
+        "dojo/_base/lang",
+        "dojo/on",
+        "dojo/dom",
+        "dojo/store/Memory",
+        "dojo/data/ObjectStore",
+        "dijit/form/TextBox",
+        "dojox/form/MultiComboBox",
+        "dojo/data/ItemFileWriteStore",
+        "dijit/form/Button",
+        "dijit/form/ComboBox",
+        "dojo/dom-construct",
+        "dojo/dom-class",
+        "dojo/dom-attr",
+      ], function (
+        declare,
+        lang,
+        on,
+        dom,
+        Memory,
+        DataStore,
+        TextBox,
+        MultiComboBox,
+        ItemFileWriteStore,
+        Button,
+        ComboBox,
+        domc,
+        domclass,
+        domattr
+      ) {
+        var i = 0;
+        var cssPath = "";
+        var msg = "houcine";
+        var x = dojo.declare("MultiSelectDropdown", [dijit.form.TextBox], {
+          // multi select dropdown used for selecting codes & brands.
+          // configured with a generic (dojo.api.Read) datastore
+
+          dataStore: null, // DS - MUST be provided at construction
+          valueField: "", // which field in DS to use to store data.  Defaults to $key.
+          textField: "", // which field in DS to use for display.  Defaults to $descriptor.
+          textFieldList: [], // OPTIONAL list of fields to use for item display.  If this is not provided then we just use textField
+          labelList: [], // OPTIONAL list of labels to use corresponding to the fields in textFieldList.  If not provided the label header won't be displayed.
+          dataCarrierId: "", // this can specify the id of a hidden field to use to store the selected values.  Optional - if not specified a new hidden field will be created.
+
+          _hidden: null,
+          _txtFilter: null, // textbox used for filtering
+          _checkboxList: null, // UL element used to contain the checkboxes
+
+          postMixInProperties: function () {
+            this.inherited(arguments);
+            this.valueField = this.valueField || "$key";
+            this.textField = this.textField || "$descriptor";
+            if (!this.dataStore) throw "Data store must be provided";
+          },
+
+          postCreate: function () {
+            this.inherited(arguments);
+
+            this._loadStylesheet();
+            this._createControlUI();
+
+            // if there are values in the hidden field we want to loadItems to make sure we pop the text
+            // but in general not a bad thing to call loadItems this way when they open the popup it's already there, and
+            // we just load it in the background.
+            this._loadItems();
+            //            if (this._hidden.value) {
+            //                this._loadItems();
+            //            }
+          },
+
+          focus: function () {
+            // ignore those, because they prevent clicking within the filter box
+          },
+
+          _loadItems: function () {
+            this._panel.innerHTML =
+              "<img src='images/loading_animation_liferay.gif' alt='Loading...'>";
+            this.dataStore.fetch({
+              count: 9999, // dont worry about paging...
+              sort: [{ attribute: this.textField }],
+              onComplete: dojo.hitch(this, "_onItemsLoaded"),
+            });
+          },
+
+          _onItemsLoaded: function (items) {
+            var div = this._panel;
+            div.innerHTML = "";
+
+            // filter control
+            this._createFilterUI(div);
+            this._createCheckboxesUI(div, items);
+            this._createButtonsUI(div);
+
+            this._filterItems();
+
+            //            if (this._hidden.value) {
+            //                this._resetSelectionText();
+            //            }
+          },
+
+          // *************  UI
+
+          _loadStylesheet: function () {
+            /* var path = cssPath;
+                                   var ss = document.styleSheets;
+                                   for (var i = 0, max = ss.length; i < max; i++) {
+                                       if (ss[i].href == path)
+                                           return;
+                                   }
+                                   if (document.createStyleSheet) {
+                                       document.createStyleSheet(path);
+                                   } else {
+                                       var link = document.createElement("link");
+                                       link.rel = "stylesheet";
+                                       link.href = path;
+                                        document.getElementsByTagName("head")[0].appendChild(link);
+                                   }**/
+          },
+
+          _createControlUI: function () {
+            // Create the initially visible UI - adding the popup button to the textbox control
+
+            this.domNode.style.position = "relative";
+            // var txt = new dijit.form.TextBox();
+            // dojo.place(txt.domNode, this.domNode, "last");
+            var btn = document.createElement("a");
+            btn.href = "#";
+
+            btn.innerHTML =
+              "<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAANlBMVEXFxcX////5+fnU1NTy8vLLy8vg4ODZ2dn19fX7+/vc3NzDw8PX19fm5ubi4uLHx8fQ0NDt7e2l3/WWAAAB00lEQVR4nO3b7Y6iMBiAURdUxC/0/m92d9uaDGyGoO6ktJ7zk4B5n0CsDXGzAQAAAAAAAAAAAAAAAAAAAAAgoyHZvSx9QO6Qb+3O7V/dr5eF69vzahN37ZuFffyAVmE2ChUqXIG0HB62wTNp8YrtZuXrYfJ64f2Ue/ZlFCpcP4XfFh62hRQO133wROEhXrHPPfpCQ9xEtf3ywm1a6nOPvtBwDp4rjJfkHn0hhQrXb+jiuMsDiyu8RU0fzKbFU/p7uiT36M85bQ9hFZ9NbA7BpZClfuxPYVB9Yf33sP7C+p/Sigs397iJmi+M26ZCC9NPm9l94iWc0xW2ED50wXm+MJ5Uyo+ZCYUK1+9TCrsFhcdCC9NblksTTJbFdLAr5F3MnNNcYXMuc6kfUZh7vvcpzD3f+2YL+66GwuMluE8WwqjQTcVYewyr+mVcGA8ed7mn+x/aYzAp3MejCosQC6dPqcKSzD6lVXyX3uIL7Ou4ML0Jr+IeRqeub77oK0p7bAD/KSx/Y/igsHwfW7j2P4884VHYVHsPk9v+q2tNacntqrB0Csv3CYUjFRZO/lmae5yfMIzknuYHDAqLp7B89RfW/10KAAAAAAAAAAAAAAAAAAAAZfkN2y0xz9hS5ScAAAAASUVORK5CYII=' alt='Select' width='30' height='25'>";
+            btn.style.position = "absolute";
+            btn.style.right = "3px";
+            btn.style.top = "0px";
+            btn.style.zIndex = 20;
+            dojo.place(btn, this.domNode, "last");
+            dojo.connect(btn, "onclick", dojo.hitch(this, "_togglePopup"));
+            //            var btn = document.createElement("");
+
+            // hidden field used to carry the value
+            if (this.dataCarrierId) {
+              this._hidden = dojo.byId(this.dataCarrierId);
+            } else {
+              var hid = (this._hidden = document.createElement("input"));
+              hid.type = "hidden";
+              hid.name = this.domNode.name;
+              this.domNode.name = "";
+              hid.value = this.get("value");
+              dojo.place(hid, this.domNode, "after");
+            }
+
+            var div = (this._panel = document.createElement("div"));
+            div.className = "multiselect";
+            div.style.display = "block";
+            div.style.width = "600px"; // this will be overwritten when the popup is shown
+            div.style.position = "absolute";
+            dojo.place(div, btn, "after");
+          },
+
+          _createFilterUI: function (container) {
+            // Filter header panel
+            var panConFilter = document.createElement("div");
+
+            panConFilter.className = "panConFilter";
+
+            var panFilter = document.createElement("div");
+            panFilter.className = "filter";
+            var lbl = document.createElement("label");
+            lbl.className = "lbl";
+            lbl.innerHTML = "Filter:";
+
+            panConFilter.appendChild(lbl);
+
+            var div = document.createElement("div");
+            div.className = "textcontrol";
+            var txtFilter = (this._txtFilter = document.createElement("input"));
+            txtFilter.type = "text";
+            txtFilter.title = "Filter Items";
+            div.appendChild(txtFilter);
+            panConFilter.appendChild(div);
+
+            container.appendChild(panConFilter);
+
+            container.appendChild(document.createElement("br"));
+
+            dojo.connect(
+              txtFilter,
+              "onkeyup",
+              dojo.hitch(this, "_filterItems")
+            );
+          },
+
+          _createCheckboxesUI: function (div, items) {
+            // show the checkboxes in the provided div
+            var self = this;
+            // need a div wrapper for IE
+            var container = document.createElement("div");
+            container.className = "checkboxList";
+            var tbl = (this._checkboxList = document.createElement("table"));
+            var th = this._createCheckboxesHeader(tbl);
+            var selected = this._hidden.value;
+            var fieldList = this.textFieldList;
+            if (!fieldList || fieldList.length == 0)
+              fieldList = [this.textField];
+
+            var maxWidth =
+              dojo.marginBox(this.domNode).w / fieldList.length - 20 + "px";
+            for (var i = 0; i < items.length; i++) {
+              if (window.CP.shouldStopExecution(0)) break;
+              var text = this.dataStore.getValue(items[i], this.textField);
+              var tr = document.createElement("tr");
+              var td = document.createElement("td");
+
+              var chk = document.createElement("input");
+              chk.id = this.domNode.id + "_chk_" + i;
+              chk.type = "checkbox";
+              chk.value = this.dataStore.getValue(items[i], this.valueField);
+              chk.text = text; // this is not actually displayed but used in our script
+              chk.checked = selected.indexOf(chk.value) != -1;
+              td.appendChild(chk);
+              tr.appendChild(td);
+
+              for (var j = 0; j < fieldList.length; j++) {
+                if (window.CP.shouldStopExecution(1)) break;
+                td = document.createElement("td");
+                var lbl = document.createElement("label");
+                lbl.htmlFor = chk.id;
+                if (typeof fieldList[j] == "function") {
+                  text = fieldList[j](items[i]);
+                } else {
+                  text = this.dataStore.getValue(items[i], fieldList[j]);
+                }
+                lbl.appendChild(document.createTextNode(text));
+                lbl.style.maxWidth = maxWidth;
+                td.appendChild(lbl);
+                tr.appendChild(td);
+              }
+
+              // event handler so we can update text when they select an item
+              window.CP.exitedLoop(1);
+              dojo.connect(chk, "onclick", function () {
+                self._onCheckboxClicked(this.checked, this.value, this.text);
+              });
+
+              tbl.appendChild(tr);
+            }
+            window.CP.exitedLoop(0);
+            container.appendChild(tbl);
+            div.appendChild(container);
+          },
+
+          _createCheckboxesHeader: function (tbl) {
+            // Create table header for the checkboxes
+            if (!this.labelList) return;
+            var tr = document.createElement("tr");
+
+            // first one for the checkbox column
+            var th = document.createElement("th");
+            tr.appendChild(th);
+            for (var i = 0; i < this.labelList.length; i++) {
+              if (window.CP.shouldStopExecution(2)) break;
+              var th = document.createElement("th");
+              th.appendChild(document.createTextNode(this.labelList[i]));
+              tr.appendChild(th);
+            }
+            window.CP.exitedLoop(2);
+
+            tbl.appendChild(tr);
+          },
+
+          _createButtonsUI: function (div) {
+            // Button panel at the bottom
+
+            var panButtons = document.createElement("div");
+            panButtons.className = "buttons";
+            var self = this;
+
+            // Select None
+            var btn = document.createElement("button");
+            btn.className = "slxbutton";
+            btn.innerHTML = "None";
+            panButtons.appendChild(btn);
+            dojo.connect(btn, "onclick", function (e) {
+              self._selectNone();
+
+              dojo.stopEvent(e);
+            });
+
+            var spacer = document.createElement("span");
+            spacer.innerHTML =
+              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            panButtons.appendChild(spacer);
+
+            // OK
+            var btn = document.createElement("button");
+            btn.className = "slxbutton";
+            btn.innerHTML = "OK";
+            panButtons.appendChild(btn);
+            div.appendChild(panButtons);
+
+            dojo.connect(btn, "onclick", function (e) {
+              self._togglePopup();
+              dojo.stopEvent(e);
+            });
+          },
+
+          _resetSelectionText: function () {
+            // query the selected checkboxes and set the displayed text (and hidden selection values) to those
+            var selIds = [];
+            var selText = [];
+            dojo
+              .query("input[type=checkbox]", this._checkboxList)
+              .forEach(function (node) {
+                if (node.checked) {
+                  selIds.push(node.value);
+                  selText.push(node.text);
+                }
+              });
+            this._hidden.value = selIds.join(",");
+            this.set("value", selText.join(", "));
+          },
+
+          // *************  Events
+
+          _togglePopup: function () {
+            if (this._panel.style.display == "none") {
+              var sz = dojo.marginBox(this.domNode);
+              this._panel.style.width = sz.w + "px";
+              this._panel.style.display = "";
+              if (!this._checkboxList) this._loadItems();
+            } else {
+              this._panel.style.display = "none";
+            }
+          },
+
+          _onCheckboxClicked: function (isChecked, value, text) {
+            var selIds = this._hidden.value.split(",");
+            var selText = this.get("value").split(", ");
+            if (this._hidden.value == "") {
+              selIds = [];
+              selText = [];
+            }
+
+            if (isChecked) {
+              if (
+                !dojo.some(selIds, function (i) {
+                  return i == value;
+                })
+              ) {
+                selIds.push(value);
+                selText.push(text);
+                selText.sort();
+              }
+            } else {
+              selIds = dojo.filter(selIds, function (i) {
+                return i != value;
+              });
+              selText = dojo.filter(selText, function (i) {
+                return i != text;
+              });
+            }
+            this._hidden.value = selIds.join(",");
+            this.set("value", selText.join(", "));
+          },
+
+          _filterItems: function () {
+            // show/hide items that match/fail current filter
+            var filter = this._txtFilter.value.toLowerCase();
+            var showTr = null;
+            dojo.query("td label", this._checkboxList).forEach(function (node) {
+              var tr = node.parentNode.parentNode;
+              if (showTr === tr)
+                // we already decided to show this tr so let's not hide it now.
+                return;
+
+              if (
+                filter &&
+                node.innerHTML.toLowerCase().indexOf(filter) == -1
+              ) {
+                tr.style.display = "none";
+              } else {
+                showTr = tr;
+                tr.style.display = "";
+              }
+            });
+          },
+
+          _selectAll: function () {
+            var selIds = [];
+            var selText = [];
+            dojo
+              .query("input[type=checkbox]", this._checkboxList)
+              .forEach(function (node) {
+                if (node.parentNode.parentNode.style.display !== "none") {
+                  node.checked = true;
+                  selIds.push(node.value);
+                  selText.push(node.text);
+                }
+              });
+            this._hidden.value = selIds.join(",");
+            this.set("value", selText.join(", "));
+          },
+
+          _selectNone: function () {
+            dojo
+              .query("input[type=checkbox]", this._checkboxList)
+              .forEach(function (node) {
+                node.checked = false;
+              });
+            this._hidden.value = "";
+            this.set("value", "");
+          },
+        });
+
+        var parent6 = dom.byId("last");
+        var myButton = new Button({
+          label: "Click me!",
+          onClick: function () {
+            i = i + 1;
+            var memoryStore = new Memory({
+              data: [
+                { value: "AL", label: "Alabama" },
+                { value: "AK", label: "Alaska" },
+                { value: "AZ", label: "Arizona" },
+                { value: "AR", label: "Arkansas" },
+                { value: "CA", label: "California" },
+                { value: "CO", label: "Colorado" },
+                { value: "CT", label: "Connecticut" },
+                { value: "K", label: "Alaska" },
+                { value: "Z", label: "Arizona" },
+                { value: "R", label: "Arkansas" },
+                { value: "A", label: "California" },
+                { value: "O", label: "Colorado" },
+                { value: "au", label: "autre" },
+              ],
+            });
+
+            var dataStore = new DataStore({
+              objectStore: memoryStore,
+            });
+
+            var y = new x({
+              dataStore: dataStore,
+              _checkboxList: "<div>",
+              valueField: "value", // which field in DS to use to store data.  Defaults to $key.
+              textField: "label",
+              _hidden: true,
+            });
+
+            //(y).placeAt(parent6);
+            //var memberTagStore = new dojo.data.Item//var memberTagStore = new dojo.data.ItemFileReadStore({ url:"countries.json" });
+            y._panel.style.display = "none";
+            // var parent7=dom.byId("MultiSelectDropdown_0");
+            y.textbox.disabled = true;
+            var comboBox = new ComboBox({
+              store: memoryStore,
+              searchAttr: "label",
+            });
+
+            dojo.connect(comboBox, "onChange", function () {
+              if (comboBox.value == "autre") {
+                var divautr = domc.create("div", {
+                  innerHTML: "<label>Autre :</label>",
+                });
+                domclass.add(divautr, "autre" + i);
+                divautr.id = "autre" + i;
+                var myTextBox = new dijit.form.TextBox({
+                  name: "firstname",
+                  value: "" /* no or empty value! */,
+                  placeHolder: "remplir votre annotation",
+                });
+
+                myTextBox.startup();
+                myTextBox.placeAt(divautr);
+
+                var ann = domattr.get(comboBox.domNode, "annotation");
+                alert(ann);
+                var oa = dom.byId("annotation" + ann);
+                domc.place(divautr, oa, "last");
+              } else {
+                var ann = domattr.get(comboBox.domNode, "annotation");
+
+                if (dom.byId("autre" + ann)) {
+                  domc.destroy(dom.byId("autre" + ann));
+                }
+              }
+            });
+            comboBox.startup();
+            var divannoblock = domc.create("div");
+            domclass.add(divannoblock, "annotation");
+            divannoblock.id = "annotation" + i;
+            domattr.set(divannoblock, "annotation", "" + i);
+            var divannotation = domc.create("div", {
+              innerHTML: "<label>Annotation :</label>",
+            });
+            domclass.add(divannotation, "form-input");
+            var divdest = domc.create("div", {
+              innerHTML: "<label>Destinataires :</label>",
+            });
+            domclass.add(divdest, "form-input");
+            var parent6 = dom.byId("last");
+            domc.place(divannotation, divannoblock, "last");
+
+            domc.place(divdest, divannoblock, "last");
+
+            domc.place(divannoblock, parent6, "after");
+            var closeBnt = domc.create("a", {
+              innerHTML:
+                "<img src='https://www.shopwillowbrook.com/wrdprss/wp-contenter/plugins/indeed-smart-popup/assets/img/close_1.png' alt='supprimer' height='20' width='20' >",
+            });
+            domc.place(closeBnt, divannoblock, "last");
+            closeBnt.id = "closebnt" + i;
+            comboBox.placeAt(divannotation);
+            domattr.set(comboBox.domNode, "annotation", i);
+            y.placeAt(divdest);
+
+            domclass.add(closeBnt, "closebnt");
+          },
+        });
+
+        myButton.startup();
+        myButton.placeAt(parent6);
+      });
+      //# sourceURL=pen.js
+    </script>
+  </body>
+</html>

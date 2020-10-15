@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8"/>
+    <title>Hello DOJO</title>
+  </head>
+  <!-- <link rel="stylesheet" href="dojo-release-1.16.3/dijit/themes/claro/claro.css"></link> -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.14.1/dijit/themes/claro/claro.css"></link>
+  <body class="claro">
+    <h1>DEMO : DIJIT SELECT BOX</h1>
+    <select name="multiselect" data-dojo-type="dojox/form/resources/DropDownSelect">
+      <option value="1">One</option>
+      <option value="2">Two</option>
+      <option value="3">Three</option>
+      <option value="4">Four</option>
+      <option value="5">Five</option>
+    </select>
+
+    <button onClick="alert(dijit.byId('multiselect').get('value'));">Value</button>
+    <button onClick="alert(dijit.byId('multiselect').get('displayedValue'));">Displayed Value</button>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.14.1/dojo/dojo.js" data-dojo-config="async:false, parseOnLoad:true"></script>
+    
+    <!-- <script src="dojo-release-1.16.3/dojo/dojo.js"></script> -->
+    <script>
+      require(["dojo/parser", "dijit/form/DropDownSelect", "dojox/form/resources/DropDownSelect", "dojo/domReady"])
+    </script>
+  </body>
+</html>

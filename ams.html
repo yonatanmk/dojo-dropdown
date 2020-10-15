@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.14.1/dijit/themes/claro/claro.css"></link> -->
+    <link rel="stylesheet" href="mtyle.css">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.14.1/dojo/dojo.js" data-dojo-config="async:false, parseOnLoad:true"></script>
+    
+    <script>
+      require([
+        "dojo/dom-construct",
+        "dojo/json",
+        "dijit/form/Form",
+        "dojox/form/CheckedMultiSelect",
+        "dojo/parser",
+        "dojo/domReady!"], function (construct, JSON, Form, CheckedMultiSelect) {
+        var form, div = construct.create('div', {
+            'class': 'pad',
+            style: 'bottom:0px'
+        }, 'form');
+        getValues = function () {
+            div.innerHTML = JSON.stringify(form.get('value'));
+        };
+        new CheckedMultiSelect({
+            dropDown: true,
+            labelText: 'States',
+            multiple: true,
+            name: 'state',
+            onChange: getValues,
+            required: false
+        }, "stateSelect");
+        form = new Form({
+            style: 'display:block'
+        }, 'form');
+        form.startup();
+    });
+    </script>
+  </head>
+  <body>
+    <div id="form">
+      <div class="pad" style="top:0px">Programmatic:
+        <select id="stateSelect">
+          <option value="CA">California</option>
+          <option value="CO">Colorado</option>
+          <option value="AK">Alaska</option>
+          <option value="AR">Arkansas</option>
+          <option value="DE">Delaware</option>
+        </select>
+      </div>
+      <div class="pad" style="top:50%">Declarative:
+        <select data-dojo-type="dojox/form/CheckedMultiSelect" data-dojo-props="dropDown:true,labelText:'Countries',multiple:true,onChange:getValues, required:false" name="country">
+          <option value="THA">Thailand</option>
+          <option value="VEN">Venezuela</option>
+          <option value="KWT">Kuwait</option>
+          <option value="FRA">France</option>
+          <option value="CHL">Chile</option>
+        </select>
+      </div>
+    </div>
+  </body>
+</html>

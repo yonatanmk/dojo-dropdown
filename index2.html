@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <!-- <link rel="stylesheet" href="../../_static/js/dojo/../dijit/themes/claro/claro.css"> -->
+    <!-- <style type="text/css">
+      @import "../../_static/js/dojo/../dojox/form/resources/CheckedMultiSelect.css";
+    </style> -->
+    <script>dojoConfig = {parseOnLoad: true}</script>
+
+    <!-- load Dojo -->
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js" data-dojo-config="async: true"></script>
+    
+    <script>
+      require(["dojox/form/CheckedMultiSelect"]);
+    </script>
+  </head>
+  <body class="claro">
+    <select multiple="true" name="multiselect" data-dojo-type="dojox.form.CheckedMultiSelect">
+      <option value="TN">Tennessee</option>
+      <option value="VA" selected="selected">Virginia</option>
+      <option value="WA" selected="selected">Washington</option>
+      <option value="FL">Florida</option>
+      <option value="CA">California</option>
+    </select>
+  </body>
+</html>
