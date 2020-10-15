@@ -78,6 +78,11 @@ body {
   margin: 0 20px 0 0;
 }
 
+.dijitHasDropDownOpen .dropdownChevron {
+  transform: rotate(45deg) translate(1.06px, 1.06px); /* 1.06 = 3 * 1/2 * sqrt(2) / 2 */
+  border-width: 2px 0px 0px 2px;
+}
+
 .dropdownChevron {
   width: 6px;
 	height: 6px;
@@ -87,7 +92,5 @@ body {
 }
 
 .dropdownButtonFilled .dropdownChevron {
-  transform: rotate(45deg) translate(1.06px, 1.06px); /* 1.06 = 3 * 1/2 * sqrt(2) / 2 */
-  border: solid white;
-  border-width: 2px 0px 0px 2px;
+  border-color: white;
 }
