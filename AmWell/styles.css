@@ -53,8 +53,8 @@ body {
   background-color: white;
   color: #1774cc;
   border: 2px solid #1774cc;
-  border-radius: 15px;
-  padding: 0;
+  border-radius: 30px;
+  padding: 0 8px;
 }
 
 .dropdownButtonFilled {
@@ -66,4 +66,28 @@ body {
 
 #dijit_form_ComboButton_0_arrow .dijitArrowButtonInner {
   display: none !important;
+}
+
+.dropdownButtonContent {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.dropdownButtonText {
+  margin: 0 20px 0 0;
+}
+
+.dropdownChevron {
+  width: 6px;
+	height: 6px;
+  border: solid #1774cc;
+  border-width: 0px 2px 2px 0px;
+  transform: rotate(45deg) translate(-1.06px, -1.06px);
+}
+
+.dropdownButtonFilled .dropdownChevron {
+  transform: rotate(45deg) translate(1.06px, 1.06px);
+  border: solid white;
+  border-width: 2px 0px 0px 2px;
 }

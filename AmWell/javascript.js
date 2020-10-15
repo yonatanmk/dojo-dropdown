@@ -55,5 +55,5 @@ require([
     var dropdownButton = query("#dijit_form_ComboButton_0_arrow")
     console.log('DORPDOWN')
     console.log(dropdownButton)
-    dropdownButton[0].innerHTML = '<div>Languages</div>'
+    dropdownButton[0].innerHTML = '<div class="dropdownButtonContent"><p class="dropdownButtonText">Languages</p><div class="dropdownChevron"></div></div>'
 });
