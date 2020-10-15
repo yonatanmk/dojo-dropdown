@@ -4,8 +4,9 @@ require([
   "dojo/json",
   "dijit/form/Form",
   "dojox/form/CheckedMultiSelect",
+  "dojo/dom-class",
   "dojo/parser",
-  "dojo/domReady!"], function (query, construct, JSON, Form, CheckedMultiSelect) {
+  "dojo/domReady!"], function (query, construct, JSON, Form, CheckedMultiSelect, domClass) {
     let values = [];
     var form, div = construct.create('div', {
       'class': 'pad',
@@ -16,17 +17,18 @@ require([
       values = form.get('value').state
       console.log(values)
       const dropdownButton = query("#dijit_form_ComboButton_0_arrow")[0];
-      const classList = dropdownButton.classList;
       const style = dropdownButton.style
       if (values[0]) {
-        style['background'] = "#1774cc"
-        style['color'] = "white"
-        style['border'] = "2px solid #1774cc"
-        // dropdownButton.classList = [...dropdownButton.classList, "dropdownButtonFilled"]
+        // style['background'] = "#1774cc"
+        // style['color'] = "white"
+        // style['border'] = "2px solid #1774cc"
+        domClass.add('dijit_form_ComboButton_0_arrow', "dropdownButtonFilled")
       } else {
-        style['background'] = ""
-        style['color'] = ""
-        style['border'] = ""
+        domClass.remove('dijit_form_ComboButton_0_arrow', "dropdownButtonFilled")
+        // debugger;
+        // style['background'] = ""
+        // style['color'] = ""
+        // style['border'] = ""
       }
     };
     onClick = function () {
