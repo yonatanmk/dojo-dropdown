@@ -83,11 +83,11 @@ body {
 	height: 6px;
   border: solid #1774cc;
   border-width: 0px 2px 2px 0px;
-  transform: rotate(45deg) translate(-1.06px, -1.06px);
+  transform: rotate(45deg) translate(-1.06px, -1.06px); /* 1.06 = 3 * 1/2 * sqrt(2) / 2 */
 }
 
 .dropdownButtonFilled .dropdownChevron {
-  transform: rotate(45deg) translate(1.06px, 1.06px);
+  transform: rotate(45deg) translate(1.06px, 1.06px); /* 1.06 = 3 * 1/2 * sqrt(2) / 2 */
   border: solid white;
   border-width: 2px 0px 0px 2px;
 }
