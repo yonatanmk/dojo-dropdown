@@ -1,0 +1,74 @@
+.dojoxCheckedMultiSelectMenuCheckBoxItemIcon {
+  display: block;
+}
+
+.dojoxCheckedMultiSelectCheckBoxInput {
+  opacity: 1;
+}
+
+.dojoxCheckedMultiSelectMenu {
+  padding: 16px 24px 16px 21px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  background-color: white !important;
+}
+
+.dijitMenuItemLabel {
+  padding-left: 8px !important;
+  padding-top: 6px !important;
+}
+
+.dijitMenuTable {
+
+}
+
+.dijitMenuPopup {
+  margin-top: 20px !important;
+
+}
+
+.dijitMenuItem:not(:last-child) .dijitMenuItemIconCell {
+  padding-bottom: 16px !important;
+}
+
+.dijitMenuItem:not(:last-child) .dijitMenuItemLabel {
+  padding-bottom: 16px !important;
+}
+
+div.pad {
+  position: absolute;
+}
+
+#form {
+  display: none;
+}
+
+body {
+  background-color: salmon;
+}
+
+#widget_dropdown-multiselect table.dojoxCheckedMultiSelectButton tbody tr:first-child td:first-child {
+  display: none !important;
+}
+
+#dijit_form_ComboButton_0_arrow {
+  /* display: none !important; */
+  width: 100px;
+  height: 30px;
+  background-color: white;
+  color: #1774cc;
+  border: 2px solid #1774cc;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.dropdownButtonFilled {
+  /* display: none !important; */
+  background-color: #1774cc !important;
+  color: white;
+  border: 2px solid white;
+}
+
+#dijit_form_ComboButton_0_arrow .dijitArrowButtonInner {
+  display: none !important;
+}
