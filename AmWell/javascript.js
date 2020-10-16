@@ -23,7 +23,7 @@ require([
     new CheckedMultiSelect({
       class: 'dropdownMultiselect',
       dropDown: true,
-      labelText: 'States',
+      // labelText: 'States',
       multiple: true,
       name: 'state',
       onChange: getValues('dijit_form_ComboButton_0_arrow', 'state'),
@@ -32,7 +32,7 @@ require([
     new CheckedMultiSelect({
       class: 'dropdownMultiselect',
       dropDown: true,
-      labelText: 'Countries',
+      // labelText: 'Countries',
       multiple: true,
       name: 'country',
       onChange: getValues('dijit_form_ComboButton_1_arrow', 'country'),
