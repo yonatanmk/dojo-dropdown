@@ -12,20 +12,12 @@ require([
       'class': 'pad',
       style: 'bottom:0px'
     }, 'form');
-    getStateValues = function () {
-      values = form.get('value').state
+    getValues = (id, label) => () => {
+      values = form.get('value')[label]
       if (values[0]) {
-        domClass.add('dijit_form_ComboButton_0_arrow', "dropdownButtonFilled")
+        domClass.add(id, "dropdownButtonFilled")
       } else {
-        domClass.remove('dijit_form_ComboButton_0_arrow', "dropdownButtonFilled")
-      }
-    };
-    getCountryValues = function () {
-      values = form.get('value').country
-      if (values[0]) {
-        domClass.add('dijit_form_ComboButton_1_arrow', "dropdownButtonFilled")
-      } else {
-        domClass.remove('dijit_form_ComboButton_1_arrow', "dropdownButtonFilled")
+        domClass.remove(id, "dropdownButtonFilled")
       }
     };
     new CheckedMultiSelect({
@@ -34,7 +26,7 @@ require([
       labelText: 'States',
       multiple: true,
       name: 'state',
-      onChange: getStateValues,
+      onChange: getValues('dijit_form_ComboButton_0_arrow', 'state'),
       required: false
     }, "stateSelect");
     new CheckedMultiSelect({
@@ -43,7 +35,7 @@ require([
       labelText: 'Countries',
       multiple: true,
       name: 'country',
-      onChange: getCountryValues,
+      onChange: getValues('dijit_form_ComboButton_1_arrow', 'country'),
       required: false
     }, "countrySelect");
     form = new Form({
