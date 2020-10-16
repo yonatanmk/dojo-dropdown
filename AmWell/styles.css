@@ -38,21 +38,21 @@ body {
   padding-bottom: 16px !important;
 }
 
-/* .dijitMenuItemHover {
+.dijitMenuItem {
   background-color: inherit !important;
   color: inherit !important;
-} */
+}
 
-#widget_dropdown-multiselect table.dojoxCheckedMultiSelectButton tbody tr:first-child td:first-child {
+.dropdownMultiselect table.dojoxCheckedMultiSelectButton tbody tr:first-child td:first-child {
   display: none !important;
 }
 
-#dijit_form_ComboButton_0_arrow {
+.dijitDownArrowButton {
   width: 100px;
   height: 30px;
   background-color: white;
-  color: #1774cc;
-  border: 2px solid #1774cc;
+  color: #1774cc !important;
+  border: 2px solid #1774cc !important;
   border-radius: 30px;
   padding: 0 8px;
 }
@@ -63,18 +63,19 @@ body {
   border: 2px solid #1774cc;
 }
 
-#dijit_form_ComboButton_0_arrow .dijitArrowButtonInner {
+.dijitDownArrowButton .dijitArrowButtonInner {
   display: none !important;
 }
 
 .dropdownButtonContent {
   display: flex;
   align-items: center;
-  padding: 0;
+  justify-content: space-between;
+  padding: 0 10px;
 }
 
 .dropdownButtonText {
-  margin: 0 20px 0 0;
+  margin: 0;
 }
 
 .dijitHasDropDownOpen .dropdownChevron {
