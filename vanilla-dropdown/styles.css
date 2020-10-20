@@ -1,0 +1,67 @@
+
+.nav {
+  display: flex;
+}
+
+.nav .button {
+  background-color: #1873cb;
+  color: white;
+  padding: 8px 16px;
+  margin: 0 8px;
+  border: 2px solid #1873cb;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.nav .button.expanded {
+  background-color:white;
+  color: #1873cb;
+}
+
+.nav .button.expanded .expand-icon{
+  transform: rotate(180deg);
+}
+
+.nav .button .button-text {
+  margin-right: 4px
+}
+
+.checkbox-menu-container {
+  position: relative;
+}
+
+.checkbox-menu-container .menu {
+  position: absolute;
+  left:8px;
+  flex-direction: column;
+  background-color: white;
+  padding: 16px 24px;
+  box-shadow: 0 0.15em 0.25em lightgrey;
+  border-radius: 4px;
+  min-width: 96px;
+  max-width: 230px;
+  max-height: 500px;
+  overflow: scroll;
+}
+
+.checkbox-menu-container .checkbox-item {
+  display: flex;
+  margin-top: 8px;
+
+}
+
+.checkbox-menu-container .checkbox-item {
+  display: flex;
+  margin-top: 8px;
+}
+
+.checkbox-menu-container .checkbox-item .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.checkbox-menu-container .checkbox-item:first-child {
+  margin-top: 0
+}
+

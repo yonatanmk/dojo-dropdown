@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<!-- https://jsfiddle.net/45ug8bx7/1/ -->
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>dojox CheckedMultiSelect</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="./javascript.js"></script>
+  <link rel="stylesheet" type="text/css" href="./styles.css"  />
+  <script id="insert"></script>
+
+</head>
+<body>
+  <nav class="nav">
+    <button class="button">Foo</button>
+    <div role="menu" class="checkbox-menu-container">
+      <button id="states-menu-button" data-opens-menu="states-menu" class="button">
+        <span class="button-text">States</span>
+        <span class="expand-icon" aria-hidden="true">&#x25be;</span>
+      </button>
+      <div class="menu" id="states-menu">
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="AL" value="AL">
+          <label class="label" for="AL"> Alabama</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="AK" value="AK">
+          <label class="label" for="AK"> Alaska</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="AZ" value="AZ">
+          <label class="label" for="AZ"> Arizona</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="AR" value="AR">
+          <label class="label" for="AR"> Arkansas</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="CA" value="CA">
+          <label class="label" for="CA"> California</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="CO" value="CO">
+          <label class="label" for="CO"> Colorado</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="CT" value="CT">
+          <label class="label" for="CT"> Connecticut</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="DE" value="DE">
+          <label class="label" for="DE"> Delaware</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="FL" value="FL">
+          <label class="label" for="FL"> Florida</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="GA" value="GA">
+          <label class="label" for="GA"> Georgia</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="HI" value="HI">
+          <label class="label" for="HI"> Hawaii</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="ID" value="ID">
+          <label class="label" for="ID"> Idaho</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="IL" value="IL">
+          <label class="label" for="IL"> Illinois</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="IN" value="IN">
+          <label class="label" for="IN"> Indiana</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="IA" value="IA">
+          <label class="label" for="IA"> Iowa</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="KS" value="KS">
+          <label class="label" for="KS"> Kansas</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="KY" value="KY">
+          <label class="label" for="KY"> Kentucky</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="LA" value="LA">
+          <label class="label" for="LA"> Louisiana</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="ME" value="ME">
+          <label class="label" for="ME"> Maine</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MD" value="MD">
+          <label class="label" for="MD"> Maryland</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MA" value="MA">
+          <label class="label" for="MA"> Massachusetts</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MI" value="MI">
+          <label class="label" for="MI"> Michigan</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MN" value="MN">
+          <label class="label" for="MN"> Minnesota</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MS" value="MS">
+          <label class="label" for="MS"> Mississippi</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MO" value="MO">
+          <label class="label" for="MO"> Missouri</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="MT" value="MT">
+          <label class="label" for="MT"> Montana</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NE" value="NE">
+          <label class="label" for="NE"> Nebraska</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NV" value="NV">
+          <label class="label" for="NV"> Nevada</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NH" value="NH">
+          <label class="label" for="NH"> New Hampshire</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NJ" value="NJ">
+          <label class="label" for="NJ"> New Jersey</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NM" value="NM">
+          <label class="label" for="NM"> New Mexico</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NY" value="NY">
+          <label class="label" for="NY"> New York</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="NC" value="NC">
+          <label class="label" for="NC"> North Carolina</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="ND" value="ND">
+          <label class="label" for="ND"> North Dakota</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="OH" value="OH">
+          <label class="label" for="OH"> Ohio</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="OK" value="OK">
+          <label class="label" for="OK"> Oklahoma</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="OR" value="OR">
+          <label class="label" for="OR"> Oregon</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="PA" value="PA">
+          <label class="label" for="PA"> Pennsylvania</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="RI" value="RI">
+          <label class="label" for="RI"> Rhode Island</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="SC" value="SC">
+          <label class="label" for="SC"> South Carolina</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="SD" value="SD">
+          <label class="label" for="SD"> South Dakota</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="TN" value="TN">
+          <label class="label" for="TN"> Tennessee</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="TX" value="TX">
+          <label class="label" for="TX"> Texas</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="UT" value="UT">
+          <label class="label" for="UT"> Utah</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="VT" value="VT">
+          <label class="label" for="VT"> Vermont</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="VA" value="VA">
+          <label class="label" for="VA"> Virginia</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="WA" value="WA">
+          <label class="label" for="WA"> Washington</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="WV" value="WV">
+          <label class="label" for="WV"> West Virginia</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="WI" value="WI">
+          <label class="label" for="WI"> Wisconsin</label>
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" name="state" id="WY" value="WY">
+          <label class="label" for="WY"> Wyoming</label>
+        </div>
+      </div>
+    </div>
+    <button class="button">Bar</button>
+  </nav>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+</body>
+</html>
